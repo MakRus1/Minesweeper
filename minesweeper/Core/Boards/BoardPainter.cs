@@ -1,10 +1,11 @@
+using System.Collections.Generic;
+using System.Drawing;
+
 namespace minesweeper.Core.Boards
 {
     public class BoardPainter
     {
         public Board Board { get; set; }                                                // Поле
-
-        public Cell HoveredCell { get; set; }                                           // Выбранная ячейка
 
         private Dictionary<int, SolidBrush> _cellColours;                               // Цвета
 
@@ -59,9 +60,7 @@ namespace minesweeper.Core.Boards
         private Brush GetBackgroundBrush(Cell cell)
         {
             if (cell.Opened)
-            {
                 return Brushes.LightGray;
-            }
 
             return Brushes.DarkGray;
         }
@@ -109,7 +108,7 @@ namespace minesweeper.Core.Boards
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center
                     };
-                    graphics.DrawString("*", _textFont, Brushes.Black, cell.Bounds, format);
+                    graphics.DrawString("М", _textFont, Brushes.Black, cell.Bounds, format);
                 }
             }
         }

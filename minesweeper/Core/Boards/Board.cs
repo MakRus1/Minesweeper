@@ -1,8 +1,14 @@
+using System;
+using System.Linq;
+using System.Windows.Forms;
+
 namespace minesweeper.Core.Boards
 {
     public class Board
     {
         public Minesweeper Minesweeper { get; set; }
+
+        public BoardPainter Painter { get; set; }
 
         public int Width { get; set; }                                  // Ширина
         public int Height { get; set; }                                 // Высота
@@ -21,13 +27,14 @@ namespace minesweeper.Core.Boards
 
 
         // Конструктор поля
-        public Board(Minesweeper minesweeper, int width, int height, int mines)     
+        public Board(Minesweeper minesweeper, int width, int height, int mines)
         {
             Minesweeper = minesweeper;
             Width = width;
             Height = height;
             NumMines = mines;
             Cells = new Cell[width, height];
+            Painter = new BoardPainter { Board = this };
         }
 
         // Подготовка поля
@@ -142,7 +149,7 @@ namespace minesweeper.Core.Boards
                     {
                         correctMines++;
                     }
-                    
+
                     // Если клетка закрыта
                     if (c.Closed)
                     {

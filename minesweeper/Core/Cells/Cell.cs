@@ -1,29 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using minesweeper.Core.Boards;
 
 namespace minesweeper.Core
 {
     public class Cell
     {
-        public int XLoc { get; set; }                       // Номер ячейки по X
-        public int YLoc { get; set; }                       // Номер ячейки по Y
-        public int XPos { get; set; }                       // Позиция на поле по X
-        public int YPos { get; set; }                       // Позиция на поле по Y
-        public Point CenterPos { get; set; }                // Центр ячейки
-        public Point TopLeftPos { get; set; }               // Верхняя левая точка
-        public Point BottomLeftPos { get; set; }            // Нижняя левая точка
+        public int XLoc { get; set; }                               // Номер ячейки по X
+        public int YLoc { get; set; }                               // Номер ячейки по Y
+        public int XPos { get; set; }                               // Позиция на поле по X
+        public int YPos { get; set; }                               // Позиция на поле по Y
+        public Point CenterPos { get; set; }                        // Центр ячейки
+        public Point TopLeftPos { get; set; }                       // Верхняя левая точка
+        public Point BottomLeftPos { get; set; }                    // Нижняя левая точка
 
-        public int CellSize { get; set; }                   // Размер ячейки
+        public int CellSize { get; set; }                           // Размер ячейки
 
-        public CellState CellState { get; set; }            // Состояние ячейки
-        public CellType CellType { get; set; }              // Тип ячейки
+        public CellState CellState { get; set; }                    // Состояние ячейки
+        public CellType CellType { get; set; }                      // Тип ячейки
 
-        public int NumMines { get; set; }                   // Количество мин
+        public int NumMines { get; set; }                           // Количество мин
 
-        public Board Board { get; set; }                    // Текущее поле
+        public Board Board { get; set; }                            // Текущее поле
 
-        public Rectangle Bounds { get; private set; }       // Границы ячейки
+        public Rectangle Bounds { get; private set; }               // Границы ячейки
 
-        private List<Cell> Surrounding { get; set; }        // Список соседних клеток
+        private List<Cell> Surrounding { get; set; }                // Список соседних клеток
+
+
 
         // Список помеченных соседей
         public List<Cell> SurroundingFlagged => GetNeighborCells().Where(cell => cell.Flagged).ToList();
@@ -64,7 +70,6 @@ namespace minesweeper.Core
             CenterPos = new Point(XPos + (CellSize / 2 - 10), YPos + (CellSize / 2 - 10));
             TopLeftPos = new Point(XPos, YPos);
             BottomLeftPos = new Point(XPos, YPos + (CellSize - 10));
-
         }
 
         // Пометка клетки флажком
@@ -79,7 +84,8 @@ namespace minesweeper.Core
                 _ => throw new Exception($"Error type {CellType}")
             };
 
-
+            Board.Minesweeper.UpdateMinesRemaining();
+            Board.Minesweeper.Invalidate();
         }
 
         // Нажатие на клетку
@@ -92,28 +98,28 @@ namespace minesweeper.Core
                 {
                     return;
                 }
+            }
 
-                // Если в клетке мина
-                if (CellType == CellType.Mine)
+            // Если в клетке мина
+            if (CellType == CellType.Mine)
+            {
+                CellState = CellState.Opened;
+                Board.RevealMines();
+                return;
+            }
+
+            // Если клетка обычная
+            if (CellType == CellType.Regular)
+            {
+                CellState = CellState.Opened;
+            }
+
+            // Рекурсивное откытие клеток
+            if (NumMines == 0 || MinesRemaining == 0)
+            {
+                foreach (var n in GetNeighborCells())
                 {
-                    CellState = CellState.Opened;
-
-                    return;
-                }
-
-                // Если клетка обычная
-                if (CellType == CellType.Regular)
-                {
-                    CellState = CellState.Opened;
-                }
-
-                // Рекурсивное откытие клеток
-                if (NumMines == 0 || MinesRemaining == 0)
-                {
-                    foreach (var n in GetNeighborCells())
-                    {
-                        n.OnClick(true);
-                    }
+                     n.OnClick(true);
                 }
             }
         }
