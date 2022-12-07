@@ -85,6 +85,7 @@ namespace minesweeper.Core
             };
 
             Board.Minesweeper.UpdateMinesRemaining();
+            
             Board.Minesweeper.Invalidate();
         }
 
