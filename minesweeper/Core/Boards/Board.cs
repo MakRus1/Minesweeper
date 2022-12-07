@@ -20,6 +20,10 @@ namespace minesweeper.Core.Boards
 
         public bool GameOver { get; set; }                              // Окончание игры
 
+        public int Time { get; set; }                                   // Время игры
+
+        public bool IsFirstStep { get; set; }                           // Первый ли ход?
+
 
 
         public const int CellSize = 32;                                 // Размер ячейки
@@ -47,12 +51,13 @@ namespace minesweeper.Core.Boards
                     Cells[x, y] = new Cell(x, y, this);
                 }
             }
-
+            Time = 0;
+            IsFirstStep = true;
             GameOver = false;
         }
 
         // Расстановка мин
-        public void PlaceMines()
+        public void PlaceMines(int xcur = -1, int ycur = -1)
         {
             var MinesPlaced = 0;
             var random = new Random();
@@ -62,7 +67,7 @@ namespace minesweeper.Core.Boards
                 int x = random.Next(0, Width);
                 int y = random.Next(0, Height);
 
-                if (!Cells[x, y].IsMine)
+                if (!Cells[x, y].IsMine && x != xcur && y != ycur)
                 {
                     Cells[x, y].CellType = CellType.Mine;
                     MinesPlaced++;
@@ -84,6 +89,7 @@ namespace minesweeper.Core.Boards
         // Проигрыш. Показать мины и перезапустить игру
         public void RevealMines()
         {
+            
             // Показать мины
             GameOver = true;
             Minesweeper.Invalidate();
@@ -102,7 +108,7 @@ namespace minesweeper.Core.Boards
             if (response == DialogResult.Yes)
             {
                 SetupBoard();
-                PlaceMines();
+                //PlaceMines();
             }
         }
 
@@ -166,6 +172,7 @@ namespace minesweeper.Core.Boards
             // Победа
             if (flaggedAllMines || onlyCellsLeftAreMines)
             {
+                GameOver = true;
                 HandleGameOver(gameWon: true);
             }
         }

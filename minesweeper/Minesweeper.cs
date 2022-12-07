@@ -40,18 +40,25 @@ namespace minesweeper
 
             _board = new Board(this, BOARD_WIDTH, BOARD_HEIGHT, NUM_MINES);
             _board.SetupBoard();
-            _board.PlaceMines();
+            //_board.PlaceMines();
 
             Width = (BOARD_WIDTH * Board.CellSize) + (int)(Board.CellSize * 1.5);
             Height = (BOARD_HEIGHT * Board.CellSize) + Board.CellSize * 4;
 
             UpdateMinesRemaining();
+            UpdateTimer();
         }
 
         // Обновление счетчика мин на экране
         public void UpdateMinesRemaining()
         {
             lblMinesLeft.Text = $"Осталось мин: {_board.NumMinesRemaining}";
+        }
+
+        // Обновление таймера на экране
+        public void UpdateTimer()
+        {
+            lblTimer.Text = $"Время: {_board.Time}";
         }
 
         // Получение данных о режиме
@@ -152,6 +159,14 @@ namespace minesweeper
             switch (mouseArgs.Button)
             {
                 case MouseButtons.Left:
+                    if (_board.IsFirstStep)
+                    {
+                        _board.PlaceMines(cell.XLoc, cell.YLoc);
+                        timer1.Start();
+                        UpdateMinesRemaining();
+                        UpdateTimer();
+                        _board.IsFirstStep = false;
+                    }
                     cell.OnClick();
                     AfterClick();
                     break;
@@ -196,6 +211,21 @@ namespace minesweeper
             {
                 _mode = mode;
                 StartGame();
+            }
+        }
+
+        // Шаг таймера
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (_board.GameOver)
+            {
+                timer1.Stop();
+            }
+
+            if (!_board.IsFirstStep)
+            {
+                _board.Time++;
+                UpdateTimer();
             }
         }
     }

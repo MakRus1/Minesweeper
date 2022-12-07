@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblMinesLeft = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,6 +37,8 @@
             this.beginnerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.intermediateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblTimer = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,18 +113,33 @@
             this.expertToolStripMenuItem.Text = "Профессионал (30 х 16 - 99 мин) ";
             this.expertToolStripMenuItem.Click += new System.EventHandler(this.expertToolStripMenuItem_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // lblTimer
+            // 
+            this.lblTimer.AutoSize = true;
+            this.lblTimer.Location = new System.Drawing.Point(143, 33);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(46, 13);
+            this.lblTimer.TabIndex = 2;
+            this.lblTimer.Text = "Время: ";
+            // 
             // Minesweeper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(792, 620);
+            this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.lblMinesLeft);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Minesweeper";
-            this.Text = "Сапер";
+            this.Text = "Сапёр";
             this.Click += new System.EventHandler(this.Minesweeper_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Minesweeper_Paint);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Minesweeper_MouseMove);
@@ -142,5 +160,7 @@
         private ToolStripMenuItem beginnerToolStripMenuItem;
         private ToolStripMenuItem intermediateToolStripMenuItem;
         private ToolStripMenuItem expertToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
+        private Label lblTimer;
     }
 }
