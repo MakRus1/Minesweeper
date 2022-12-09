@@ -18,6 +18,8 @@ namespace minesweeper
 
         public int NUM_MINES { get; private set; }
 
+        public Records Records { get; private set; }
+
 
 
         // Конструктор игры
@@ -30,6 +32,8 @@ namespace minesweeper
 
             _mode = GameMode.Intermediate;
 
+            //Records = new Records();
+
             StartGame();
         }
 
@@ -38,7 +42,7 @@ namespace minesweeper
         {
             GetBoardSize();
 
-            _board = new Board(this, BOARD_WIDTH, BOARD_HEIGHT, NUM_MINES);
+            _board = new Board(this, BOARD_WIDTH, BOARD_HEIGHT, NUM_MINES, _mode);
             _board.SetupBoard();
             //_board.PlaceMines();
 
@@ -227,6 +231,12 @@ namespace minesweeper
                 _board.Time++;
                 UpdateTimer();
             }
+        }
+
+        private void RecordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Records = new Records();
+            Records.ShowDialog();
         }
     }
 }

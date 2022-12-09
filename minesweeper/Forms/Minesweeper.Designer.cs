@@ -39,6 +39,7 @@
             this.expertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblTimer = new System.Windows.Forms.Label();
+            this.RecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +60,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.newGameToolStripMenuItem});
+            this.newGameToolStripMenuItem,
+            this.RecordsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -127,6 +129,13 @@
             this.lblTimer.TabIndex = 2;
             this.lblTimer.Text = "Время: ";
             // 
+            // RecordsToolStripMenuItem
+            // 
+            this.RecordsToolStripMenuItem.Name = "RecordsToolStripMenuItem";
+            this.RecordsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.RecordsToolStripMenuItem.Text = "Рекорды";
+            this.RecordsToolStripMenuItem.Click += new System.EventHandler(this.RecordsToolStripMenuItem_Click);
+            // 
             // Minesweeper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,5 +171,6 @@
         private ToolStripMenuItem expertToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
         private Label lblTimer;
+        private ToolStripMenuItem RecordsToolStripMenuItem;
     }
 }

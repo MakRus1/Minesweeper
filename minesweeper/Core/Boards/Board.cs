@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace minesweeper.Core.Boards
 {
@@ -14,6 +15,8 @@ namespace minesweeper.Core.Boards
         public int Height { get; set; }                                 // Высота
 
         public int NumMines { get; set; }                               // Количество мин на поле
+
+        public GameMode Mode { get; set; }
         public int NumMinesRemaining => NumMines - FlagsPlaced();       // Количество оставшихся мин
 
         public Cell[,] Cells { get; set; }                              // Ячейки
@@ -31,12 +34,13 @@ namespace minesweeper.Core.Boards
 
 
         // Конструктор поля
-        public Board(Minesweeper minesweeper, int width, int height, int mines)
+        public Board(Minesweeper minesweeper, int width, int height, int mines, GameMode mode)
         {
             Minesweeper = minesweeper;
             Width = width;
             Height = height;
             NumMines = mines;
+            Mode = mode;
             Cells = new Cell[width, height];
             Painter = new BoardPainter { Board = this };
         }
@@ -173,6 +177,21 @@ namespace minesweeper.Core.Boards
             if (flaggedAllMines || onlyCellsLeftAreMines)
             {
                 GameOver = true;
+                Input input_name = new Input();
+                input_name.ShowDialog();
+                string name = input_name.NAME;
+
+                string filename = "../../../res/Records_";
+                if (Mode == GameMode.Beginner) filename += "beginner.bin";
+                else if (Mode == GameMode.Intermediate) filename += "intermediate.bin";
+                else if (Mode == GameMode.Expert) filename += "expert.bin";
+
+                using (BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Append)))
+                {
+                    
+                    bw.Write(name);
+                    bw.Write(Time);
+                }
                 HandleGameOver(gameWon: true);
             }
         }
